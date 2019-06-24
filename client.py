@@ -1,3 +1,6 @@
+NUMBER_OF_COMMANDS_TO_REQUEST_TO_ADD: int = 50
+ADD_COMMAND_REQUEST_INTERVAL: float = 3.5  # seconds
+
 import json
 import random
 from threading import Timer
@@ -27,8 +30,8 @@ def main(diorama_peer_nids, my_nid, raw_send, raw_receive, storage):
         for raft_peer in raft_peers:
             send(RequestAddEntry, {'command': command}, raft_peer)
 
-    for i in range(1, 21):
-        Timer(2 * i, request_add_entry).start()
+    for i in range(0, NUMBER_OF_COMMANDS_TO_REQUEST_TO_ADD):
+        Timer(ADD_COMMAND_REQUEST_INTERVAL * i, request_add_entry).start()
 
     while True:
         message_type, payload, sender_nid = receive()
